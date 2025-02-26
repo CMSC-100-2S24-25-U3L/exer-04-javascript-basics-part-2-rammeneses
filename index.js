@@ -4,6 +4,7 @@
 // importing from packages
 import { v4 as uuidv4 } from 'uuid';
 import isEmail from 'validator/lib/isEmail.js';
+import { openSync, closeSync, appendFileSync } from 'node:fs';
 
 // Function Declarations
 
@@ -41,14 +42,14 @@ function addAccount(inputs, debug = false) {
     let isValidAge = true
     
     // Validation of inputs
-    // Pre-emptive return false if we see invalid inputs
     if (inputs.length < 4) { // condition 1
         console.log('Error: Insufficient parameters')
         isValidLength = false;
     }
     // destructure the inputs array for easier input accessing
     let [fName, lName, email, age] = inputs;
-    // Validation of inputs
+
+    // Validation of inputs continuation
     // condition 2, NOTE: this checks for a falsey value
     if (!fName || !lName || !email) { 
         console.log('Error: Caught empty/null strings')
@@ -68,8 +69,10 @@ function addAccount(inputs, debug = false) {
     if (!isValidLength || !isValidStrings || !isValidEmail || !isValidAge) {
         isValid = false;
     }
-
+    
+    // Pre-emptive return false if we see invalid inputs
     if (!isValid) {
+        // Optional printing of what made the inputs invalid as an object
         if (debug){
             let toPrint = {
                 isValidLength: isValidLength,
@@ -78,23 +81,48 @@ function addAccount(inputs, debug = false) {
                 isValidAge: isValidAge
             }
             console.log(toPrint);
+            console.log("") // newline for readability
         }
+        // returning false
         return false;
     }
-    // 
+    // Saving to users.txt
+    // generating the uniqueID to append
     let uniqueID = generateUniqueID(fName, lName)
-    console.log(fName)
-    console.log(lName)
-    console.log(email)
-    console.log(age)
-    console.log(uniqueID)
-    // 
 
+    // data to save
+    let toSave = [fName, lName, email, age, uniqueID];
+    // changing to string
+    toSave = toSave.toString();
+
+
+    // Snippet modified from 
+    // https://nodejs.org/api/fs.html#fsappendfilesyncpath-data-options
+    let fd;
+
+    try {
+        fd = openSync('users.txt', 'a');
+        appendFileSync(fd, toSave);
+        appendFileSync(fd, "\n");
+    } catch (err) {
+        console.log("Error in file")
+    } finally {
+    if (fd !== undefined)
+        closeSync(fd);
+    } // End of snippet
+
+    // Optional debuggin object
+    if (debug) {
+        let toPrint = {
+            fName: fName,
+            lName: lName,
+            email: email,
+            age: age,
+            uniqueID: uniqueID,
+            savedText: toSave
+        }
+        console.log(toPrint);
+    }
+    // returning true after saving
+    return true;
 }
-
-// addAccount(["no"])
-addAccount(["no", "nah", "nn", 1,2], true)
-addAccount(["no", "", "test@g.com", 1], true)
-addAccount(["", "nah", "nn", 1], true)
-addAccount(["no", "nah", "", 1], true)
-addAccount(["no", "nah", "test@g.co", 122], true)
