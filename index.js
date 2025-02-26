@@ -51,12 +51,12 @@ function addAccount(inputs, debug = false) {
 
     // Validation of inputs continuation
     // condition 2, NOTE: this checks for a falsey value
-    if (!fName || !lName || !email) { 
+    if (!fName || !lName) { 
         console.log('Error: Caught empty/null strings')
         isValidStrings = false;
     }
     // condition 3
-    if (!isEmail(email)) { 
+    if (!email && !isEmail(email)) { 
         console.log('Error: Invalid email')
         isValidEmail = false;
     }
@@ -126,3 +126,5 @@ function addAccount(inputs, debug = false) {
     // returning true after saving
     return true;
 }
+
+export default addAccount;
