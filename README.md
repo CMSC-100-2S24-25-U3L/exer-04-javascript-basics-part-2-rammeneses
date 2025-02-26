@@ -5,3 +5,5 @@ Raphael Andrei M. Meneses <br>
 BS Computer Science <br>
 
 Key Takeaways: <br>
+- Using the validator package's isEmail() function saves a lot of time messing with regex for email validation.
+- Packages are very powerful.
