@@ -59,7 +59,7 @@ function addAccount(inputs, debug = false) {
     if (!email) { 
         console.log('Error: Invalid email')
         isValidEmail = false;
-    } else if (!isEmail(email)) {
+    } else if (!isEmail(email)) { // Only uses validators's isEmail if the email is not falsey/empty/null/undefined
         console.log('Error: Invalid email')
         isValidEmail = false;
     }
