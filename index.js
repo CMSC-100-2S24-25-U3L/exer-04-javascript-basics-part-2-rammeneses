@@ -56,7 +56,10 @@ function addAccount(inputs, debug = false) {
         isValidStrings = false;
     }
     // condition 3
-    if (!email && !isEmail(email)) { 
+    if (!email) { 
+        console.log('Error: Invalid email')
+        isValidEmail = false;
+    } else if (!isEmail(email)) {
         console.log('Error: Invalid email')
         isValidEmail = false;
     }

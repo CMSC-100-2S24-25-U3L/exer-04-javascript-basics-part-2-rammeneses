@@ -1,7 +1,7 @@
 // Importing of addAccount
 import addAccount from './index.js';
 
-// addAccount(["no"])
+addAccount(["no"])
 addAccount(["no", "nah", "nn", 1,2], true)
 addAccount(["no", "", "test@g.com", 1], true)
 addAccount(["", "nah", "nn", 1], true)
